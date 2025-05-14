@@ -1,43 +1,45 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../App'; // Ajusta la ruta según tu estructura
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import BottomTabBar from '../components/BottomTabBar';
 import TopBar from '../components/TopBar';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const clothingItems = [
-{ label: 'Camisas', icon: 'tshirt-crew', type: 'material' },
-  
-  { label: 'Chalecos', icon: 'vest', type: 'awesome' },
+  { label: 'Camisas', image: require('../assets/images/CamisaIcono.png'), type: 'image' },
   { label: 'Sobretodo', image: require('../assets/images/sobretoIcono.png'), type: 'image' },
-  { label: 'Suéteres', image: require('../assets/images/suetericono.png'), type: 'image' },
+  { label: 'Chalecos', image: require('../assets/images/ChalecoIcono.png'), type: 'image' },
+  { label: 'Suéteres', image: require('../assets/images/SueterIcono.png'), type: 'image' },
   { label: 'Pantalones', image: require('../assets/images/PantalonesIcono.png'), type: 'image' },
-  { label: 'Zapatos', icon: 'shoe-heel', type: 'material' },
+  { label: 'Zapatos', image: require('../assets/images/TaconIcono.png'), type: 'image' },
 ];
 
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Registrar'>;
+
 export default function RegistrarScreen() {
+  const navigation = useNavigation<NavigationProp>();
   return (
     <View style={styles.mainContainer}>
-      <TopBar />
-      <View style={styles.content}>
-        <Text style={styles.title}>Aquí puedes registrar tu ropa</Text>
-        <Text style={styles.subtitle}>Puedes subir tus imágenes aquí</Text>
+      <TopBar title="Registrar Ropa 📷" />
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.content}>
+          <Text style={styles.title}>Aquí puedes registrar tu ropa</Text>
 
-        <View style={styles.grid}>
-          {clothingItems.map((item, index) => (
-            <TouchableOpacity key={index} style={styles.box}>
-              {item.type === 'image' ? (
+          <View style={styles.grid}>
+            {clothingItems.map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                style={styles.box}
+                onPress={() => navigation.navigate('CategoriaFotos', { category: item.label })}
+              >
                 <Image source={item.image} style={styles.imageIcon} resizeMode="contain" />
-              ) : item.type === 'material' ? (
-                <MaterialCommunityIcons name={item.icon} size={40} color="#8B0000" />
-              ) : (
-                <FontAwesome5 name={item.icon} size={40} color="#8B0000" />
-              )}
-              <Text style={styles.label}>{item.label}</Text>
-            </TouchableOpacity>
-          ))}
+                <Text style={styles.label}>{item.label}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
-      </View>
+      </ScrollView>
       <BottomTabBar />
     </View>
   );
@@ -47,6 +49,9 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
   content: {
     flex: 1,

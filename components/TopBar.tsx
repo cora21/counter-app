@@ -1,17 +1,23 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Platform, StatusBar, Pressable } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, Platform, StatusBar, Pressable, } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const vinotinto = '#5A0000';
-const vinotintoClaro = '#8B0000'; // color al presionar
+// Define el tipo de las props
+interface TopBarProps {
+  title: string;
+}
+const vinotinto = '#800000';
+const vinotintoClaro = '#A52A2A';
+// Asegúrate de usar React.FC<TopBarProps>
+const TopBar: React.FC<TopBarProps> = ({ title }) => {
+  
 
-const TopBar: React.FC = () => {
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: vinotinto }]}>
       <View style={styles.container}>
-        {/* Texto "Inicio" debe estar dentro de un componente <Text> */}
-        <Text style={styles.title}>Inicio</Text>
-        
+        {/* Usamos el título recibido como prop */}
+        <Text style={styles.title}>{title}</Text>
+
         {/* Espacio vacío para mover el ícono hacia la derecha */}
         <View style={{ flex: 1 }} />
 
@@ -59,9 +65,9 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
   },
   title: {
-    fontSize: 20, // Tamaño de la fuente
+    fontSize: 25, // Tamaño de la fuente
     color: '#fff', // Blanco
-    fontWeight: 'bold', // Para que se vea fuerte
+    //fontWeight: 'bold', // Para que se vea fuerte
   },
 });
 

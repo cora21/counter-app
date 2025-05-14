@@ -6,7 +6,7 @@ import TopBar from '../components/TopBar';
 export default function GenerarScreen() {
   return (
     <View style={styles.mainContainer}>
-      <TopBar />
+      <TopBar title="Generar Outfit ✨" />
       <View style={styles.content}>
         <Text style={styles.title}>Aquí se generará tu outfit 👗👚</Text>
         <Text style={styles.subtitle}>Selecciona tus preferencias y ¡voilà!</Text>

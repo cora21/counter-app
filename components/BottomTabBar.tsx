@@ -19,6 +19,9 @@ const BottomTabBar = () => {
       case 'Generar Outfit':
         navigation.navigate('Generar');
         break;
+        case 'Calendario':
+          navigation.navigate('Calendario');
+          break;
       case 'Salir':
         if (Platform.OS === 'android') {
           BackHandler.exitApp();
@@ -52,6 +55,11 @@ const BottomTabBar = () => {
         <Text style={styles.tabText}>Registrar</Text>
       </TouchableOpacity>
 
+      <TouchableOpacity style={styles.tabButton} onPress={() => handlePress('Calendario')}>
+        <Icon name="calendar" size={24} color="white" />
+        <Text style={styles.tabText}>Calendario</Text>
+        </TouchableOpacity>
+        
       <TouchableOpacity style={styles.tabButton} onPress={() => handlePress('Salir')}>
         <Icon name="sign-out-alt" size={24} color="white" />
         <Text style={styles.tabText}>Salir</Text>

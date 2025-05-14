@@ -6,11 +6,11 @@ import TopBar from '../components/TopBar';
 export default function DashboardScreen() {
   return (
     <View style={styles.mainContainer}>
-      <TopBar title="Inicio" />
+      <TopBar title="Calendario" />
       {/* Contenido principal */}
       <View style={styles.content}>
-        <Text style={styles.title}>¡Bienvenida al Dashboard!</Text>
-        <Text style={styles.subtitle}>Aquí comenzará la magia de LiStyle 💃</Text>
+        <Text style={styles.title}>¡Bienvenida al Calendario!</Text>
+        <Text style={styles.subtitle}>Magic</Text>
       </View>
 
       {/* Usamos el componente reutilizable */}
