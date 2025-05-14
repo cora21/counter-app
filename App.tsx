@@ -1,20 +1,37 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import WelcomeScreen from './screens/WelcomeScreen';
+import DashboardScreen from './screens/DashboardScreen';
+import BottomTabBar from './components/BottomTabBar';
+import GenerarScreen from './screens/GenerarScreen';
+import RegistrarScreen from './screens/RegistrarScreen';
 
+
+// 1. Definimos y exportamos los tipos de navegación
+export type RootStackParamList = {
+  Welcome: undefined;
+  Dashboard: undefined;
+  Generar: undefined;
+  Registrar: undefined;
+};
+
+// 2. Creamos el stack navigator con los tipos aplicados
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+// 3. Configuramos las rutas de navegación
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Welcome"
+        screenOptions={{ headerShown: false }} // Ocultar barra superior
+      >
+        <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        <Stack.Screen name="Dashboard" component={DashboardScreen} />
+        <Stack.Screen name="Generar" component={GenerarScreen} />
+         <Stack.Screen name="Registrar" component={RegistrarScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
