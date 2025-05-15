@@ -10,7 +10,7 @@ const clothingItems = [
   { label: 'Camisas', image: require('../assets/images/CamisaIcono.png'), type: 'image' },
   { label: 'Sobretodo', image: require('../assets/images/sobretoIcono.png'), type: 'image' },
   { label: 'Chalecos', image: require('../assets/images/ChalecoIcono.png'), type: 'image' },
-  { label: 'Suéteres', image: require('../assets/images/SueterIcono.png'), type: 'image' },
+  { label: 'Suéteres', image: require('../assets/images/sueterIcono.png'), type: 'image' },
   { label: 'Pantalones', image: require('../assets/images/PantalonesIcono.png'), type: 'image' },
   { label: 'Zapatos', image: require('../assets/images/TaconIcono.png'), type: 'image' },
 ];
