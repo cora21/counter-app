@@ -13,6 +13,7 @@ import * as FileSystem from 'expo-file-system';
 import { MaterialIcons } from '@expo/vector-icons';
 import TopBar from '../components/TopBar';
 import BottomTabBar from '../components/BottomTabBar';
+import SiderBotonCategoria from '../components/SiderBotonCategoria';
 
 const { width } = Dimensions.get('window');
 const ITEM_WIDTH = width * 0.28;
@@ -22,6 +23,9 @@ const CATEGORIES = ['Camisas', 'Sobretodo', 'Suéteres', 'Chalecos', 'Pantalones
 export default function GenerarScreen() {
   const [categoryImages, setCategoryImages] = useState<{ category: string; images: string[] }[]>([]);
   const [selectedOutfit, setSelectedOutfit] = useState<{ [key: string]: string }>({});
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(CATEGORIES);
+
   const scrollXRefs = useRef<{ [key: string]: Animated.Value }>({});
   const flatListRefs = useRef<{ [key: string]: any }>({});
 
@@ -51,12 +55,12 @@ export default function GenerarScreen() {
 
   const generateRandomOutfit = () => {
     const newOutfit: { [key: string]: string } = {};
-    
+
     categoryImages.forEach(({ category, images }) => {
       if (images.length > 0) {
         const randomIndex = Math.floor(Math.random() * images.length);
         newOutfit[category] = images[randomIndex];
-        
+
         if (flatListRefs.current[category]) {
           const targetOffset = randomIndex * ITEM_WIDTH;
           flatListRefs.current[category].scrollToOffset({
@@ -66,8 +70,16 @@ export default function GenerarScreen() {
         }
       }
     });
-    
+
     setSelectedOutfit(newOutfit);
+  };
+
+  const toggleCategory = (category: string) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((cat) => cat !== category)
+        : [...prev, category]
+    );
   };
 
   const renderCarousel = (images: string[], category: string) => {
@@ -76,7 +88,9 @@ export default function GenerarScreen() {
 
     return (
       <Animated.FlatList
-        ref={ref => flatListRefs.current[category] = ref}
+        ref={(ref) => {
+          flatListRefs.current[category] = ref;
+        }}
         data={images}
         keyExtractor={(_, index) => index.toString()}
         horizontal
@@ -108,8 +122,8 @@ export default function GenerarScreen() {
               <Animated.View
                 style={[
                   styles.imageWrapper,
-                  { 
-                    height: scaleHeight, 
+                  {
+                    height: scaleHeight,
                     transform: [{ scale }],
                     borderWidth: isSelected ? 2 : 0,
                     borderColor: isSelected ? '#4A0000' : 'transparent',
@@ -125,6 +139,10 @@ export default function GenerarScreen() {
     );
   };
 
+  const visibleCategoryImages = categoryImages.filter(({ category }) =>
+    selectedCategories.includes(category)
+  );
+
   const getImageHeight = (count: number) => {
     if (count >= 5) return 70;
     if (count >= 3) return 90;
@@ -135,9 +153,17 @@ export default function GenerarScreen() {
     <View style={styles.mainContainer}>
       <TopBar title="Generar Outfit ✨" />
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.title}>Crea tu outfit perfecto</Text>
+        <View style={styles.titleContainer}>
+          <TouchableOpacity
+            onPress={() => setIsSidebarVisible(true)}
+            style={styles.adjustButton}
+          >
+            <MaterialIcons name="tune" size={28} color="#fff" />
+          </TouchableOpacity>
+          <Text style={styles.title}>Crea tu outfit perfecto</Text>
+        </View>
 
-        {categoryImages.map(({ category, images }) => (
+        {visibleCategoryImages.map(({ category, images }) => (
           <View key={category} style={styles.carouselBlock}>
             <Text style={styles.carouselTitle}>{category}</Text>
             {renderCarousel(images, category)}
@@ -145,13 +171,20 @@ export default function GenerarScreen() {
         ))}
       </ScrollView>
 
-      <TouchableOpacity 
-        style={styles.fab} 
+      <TouchableOpacity
+        style={styles.fab}
         onPress={generateRandomOutfit}
         activeOpacity={0.8}
       >
         <MaterialIcons name="autorenew" size={32} color="#fff" />
       </TouchableOpacity>
+
+      <SiderBotonCategoria
+        visible={isSidebarVisible}
+        onClose={() => setIsSidebarVisible(false)}
+        selectedCategories={selectedCategories}
+        toggleCategory={toggleCategory}
+      />
 
       <BottomTabBar />
     </View>
@@ -167,12 +200,32 @@ const styles = StyleSheet.create({
     paddingBottom: 70,
     paddingTop: 5,
   },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    justifyContent: 'flex-start',
+    paddingHorizontal: 16,
+  },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#4A0000',
-    textAlign: 'center',
-    marginBottom: 5,
+    textAlign: 'left',
+    marginLeft: 12,
+  },
+  adjustButton: {
+    backgroundColor: '#750202FF',
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 6,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   carouselBlock: {
     marginBottom: 8,
